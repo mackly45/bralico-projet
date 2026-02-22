@@ -7,14 +7,19 @@ import Brands from './sections/Brands';
 import About from './sections/About';
 import News from './sections/News';
 import Contact from './sections/Contact';
+import Preloader from './components/ui/Preloader';
 import './App.css';
 
 function App() {
+  const [loading, setLoading] = React.useState(true);
+
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      wheelMultiplier: 1.1,
+      lerp: 0.08,
     });
 
     function raf(time) {
@@ -24,19 +29,26 @@ function App() {
 
     requestAnimationFrame(raf);
 
+    if (loading) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [loading]);
 
   return (
     <>
+      {loading && <Preloader onComplete={() => setLoading(false)} />}
       <Navbar />
       <Scene />
-      <main>
+      <main style={{ opacity: loading ? 0 : 1, transition: 'opacity 1s ease' }}>
         <Hero />
-        <Brands />
         <About />
+        <Brands />
         <News />
         <Contact />
       </main>

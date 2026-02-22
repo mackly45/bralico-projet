@@ -94,8 +94,36 @@ h5 {
   padding: 0 2rem;
 }
 
+/* Kinetic UI Touches */
+.kinetic-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0.3;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.technical-text {
+  font-family: var(--font-main);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  opacity: 0.4;
+  font-weight: 500;
+}
+
+.section-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 10vh;
+}
+
+[data-scroll-container] {
+  background-color: var(--bg-dark);
+}
+
+/* Custom Scrollbar Premium */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -103,6 +131,6 @@ h5 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gold);
-  border-radius: 10px;
+  background: var(--color-bralico-red);
+  border-radius: 0;
 }
