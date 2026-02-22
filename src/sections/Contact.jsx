@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+import gsap from 'gsap';
 
 const Contact = () => {
+    const sectionRef = useRef();
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(".contact-reveal", {
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top 80%",
+                },
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power2.out"
+            });
+        }, sectionRef);
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="contacts" className="contact-section" style={{ minHeight: '100vh', padding: '15vh 0', background: 'var(--color-bralico-red)', color: 'white' }}>
+        <section id="contacts" ref={sectionRef} className="contact-section" style={{ minHeight: '100vh', padding: '15vh 0', background: 'var(--color-bralico-red)', color: 'white', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             <div className="container">
-                <p className="premium-subtitle" style={{ color: 'rgba(255,255,255,0.7)' }}>Contacts</p>
-                <h2 className="premium-title" style={{ color: 'white' }}>Restons Connectés</h2>
+                <p className="premium-subtitle contact-reveal" style={{ color: 'rgba(255,255,255,0.7)' }}>Contacts</p>
+                <h2 className="premium-title contact-reveal" style={{ color: 'white' }}>Restons Connectés</h2>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '5rem', marginTop: '6rem' }}>
-                    <div>
+                    <div className="contact-reveal">
                         <h3 style={{ fontFamily: 'var(--font-serif)', marginBottom: '3rem', textTransform: 'none', fontSize: '2rem' }}>Rapprochez-vous de nous</h3>
 
                         <div style={{ marginBottom: '3rem' }}>
@@ -42,7 +62,7 @@ const Contact = () => {
                         </div>
                     </div>
 
-                    <div style={{ background: 'rgba(0,0,0,0.1)', padding: '3rem', borderRadius: '1rem', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div className="contact-reveal" style={{ background: 'rgba(0,0,0,0.1)', padding: '3rem', borderRadius: '1rem', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                         <p style={{ marginBottom: '2rem', fontSize: '1.1rem', fontWeight: '500' }}>Inscrivez-vous à notre newsletter pour ne rien manquer de nos actualités.</p>
                         <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             <input type="email" placeholder="Votre adresse email" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '1.2rem', borderRadius: '0.3rem', color: 'white', outline: 'none' }} />
