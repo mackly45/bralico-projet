@@ -45,13 +45,20 @@ canvas {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: 0;
+  /* Changed from -1 to 0 to be visible */
   pointer-events: none;
 }
 
 #root {
   position: relative;
   z-index: 1;
+  pointer-events: none;
+  /* Let clicks pass to the scene if needed, but we'll re-enable on children */
+}
+
+#root>* {
+  pointer-events: auto;
 }
 
 /* Base Styles */

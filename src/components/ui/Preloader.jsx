@@ -9,7 +9,11 @@ const Preloader = ({ onComplete }) => {
     const lineRef = useRef();
 
     useEffect(() => {
-        // Simple progress simulation (replace with real load listener if needed)
+        // Safety timeout to ensure app becomes visible even if assets hang
+        const safetyTimeout = setTimeout(() => {
+            setProgress(100);
+        }, 5000);
+
         const interval = setInterval(() => {
             setProgress(prev => {
                 if (prev >= 100) {
@@ -18,40 +22,44 @@ const Preloader = ({ onComplete }) => {
                 }
                 return prev + 1;
             });
-        }, 20);
+        }, 30);
 
-        return () => clearInterval(interval);
+        return () => {
+            clearInterval(interval);
+            clearTimeout(safetyTimeout);
+        };
     }, []);
 
     useEffect(() => {
         if (progress === 100) {
+            // Diagnostic: briefly flash red to see if preloader is at 100%
+            if (containerRef.current) {
+                containerRef.current.style.borderTop = "5px solid var(--color-bralico-red)";
+            }
+
             const tl = gsap.timeline({
-                onComplete: onComplete
+                onComplete: () => {
+                    console.log("Preloader complete, calling onComplete");
+                    if (onComplete) onComplete();
+                }
             });
 
-            tl.to(counterRef.current, {
-                y: -100,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power4.inOut"
-            })
-                .to(logoRef.current, {
-                    scale: 1.1,
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "power4.inOut"
-                }, "-=0.4")
-                .to(lineRef.current, {
-                    scaleX: 0,
-                    transformOrigin: "right",
-                    duration: 0.8,
-                    ease: "power4.inOut"
-                }, "-=0.6")
-                .to(containerRef.current, {
+            if (counterRef.current) {
+                tl.to(counterRef.current, { y: -50, opacity: 0, duration: 0.5 });
+            }
+            if (logoRef.current) {
+                tl.to(logoRef.current, { scale: 0.9, opacity: 0, duration: 0.5 }, "-=0.3");
+            }
+            if (containerRef.current) {
+                tl.to(containerRef.current, {
                     y: "-100%",
-                    duration: 1.2,
-                    ease: "expo.inOut"
-                }, "-=0.4");
+                    duration: 1.0,
+                    ease: "power4.inOut"
+                }, "-=0.2");
+            } else {
+                // Fallback if ref is missing
+                if (onComplete) onComplete();
+            }
         }
     }, [progress, onComplete]);
 
@@ -104,7 +112,7 @@ const Preloader = ({ onComplete }) => {
                     fontSize: '4rem',
                     fontFamily: 'var(--font-main)',
                     fontWeight: '100',
-                    color: 'rgba(255,255,255,0.1)',
+                    color: '#ffffff', // Full white for visibility
                     lineHeight: 1
                 }}>
                     {progress.toString().padStart(3, '0')}

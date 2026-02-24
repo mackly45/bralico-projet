@@ -44,7 +44,9 @@ function App() {
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
       <Navbar />
-      <Scene />
+      <React.Suspense fallback={null}>
+        <Scene />
+      </React.Suspense>
       <main style={{ opacity: loading ? 0 : 1, transition: 'opacity 1s ease' }}>
         <Hero />
         <About />

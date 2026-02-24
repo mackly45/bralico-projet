@@ -7,21 +7,22 @@ const Brands = () => {
 
     const brandCategories = {
         'Bières': [
-            { id: 1, name: "Stärk", desc: "100% Malt, Double Médaille d'Or", color: "#c5a059", num: "01" },
-            { id: 2, name: "Castel Beer", desc: "La Bière Panafricaine", color: "#b22222", num: "02" },
-            { id: 3, name: "Doppel Munich", desc: "Puissance & Caractère", color: "#000000", num: "03" },
-            { id: 4, name: "Beaufort Lager", desc: "Fraîcheur Supérieure", color: "#e2e2e2", num: "04" },
-            { id: 5, name: "33 Export", desc: "La Soif de Gagner", color: "#b22222", num: "05" }
+            { id: 1, name: "Stärk", desc: "100% Malt, Double Médaille d'Or", color: "#c5a059", num: "01", image: "/products/stark.png" },
+            { id: 2, name: "Castel Beer", desc: "La Bière Panafricaine", color: "#b22222", num: "02", image: "/products/castel.png" },
+            { id: 3, name: "Doppel Munich", desc: "Puissance & Caractère", color: "#000000", num: "03", image: "/products/doppel.png" },
+            { id: 4, name: "Beaufort Lager", desc: "Fraîcheur Supérieure", color: "#e2e2e2", num: "04", image: "/products/beaufort.png" },
+            { id: 5, name: "33 Export", desc: "La Soif de Gagner", color: "#b22222", num: "05", image: "/products/33export.png" }
         ],
         'Softs': [
-            { id: 6, name: "Mboka Cola", desc: "L'Authenticité Congolaise", color: "#000000", num: "06" },
-            { id: 7, name: "World Cola", desc: "Le Goût Global", color: "#b22222", num: "07" },
-            { id: 8, name: "Top", desc: "Explosion de Saveurs Fruits", color: "#f1d382", num: "08" },
-            { id: 9, name: "Suko", desc: "Rafraîchissement Naturel", color: "#c5a059", num: "09" }
+            { id: 6, name: "Mboka Cola", desc: "L'Authenticité Congolaise", color: "#000000", num: "06", image: "/products/mboka.png" },
+            { id: 7, name: "World Cola", desc: "Le Goût Global", color: "#b22222", num: "07", image: "/products/world-cola.png" },
+            { id: 8, name: "Top Passion", desc: "Explosion de Saveurs Fruits", color: "#f1d382", num: "08", image: "/products/top-passion.png" },
+            { id: 9, name: "Top Bitter Lemon", desc: "Fraîcheur Citronnée", color: "#c5a059", num: "09", image: "/products/top-bitter-lemon.png" },
+            { id: 10, name: "Top Coco Pina", desc: "Exotisme Tropical", color: "#f1d382", num: "10", image: "/products/top-coco-pina.png" }
         ],
         'Mix': [
-            { id: 10, name: "Booster Whisky", desc: "Mix Audacieux", color: "#000000", num: "10" },
-            { id: 11, name: "Booster Cider", desc: "Plaisir Pomme", color: "#c5a059", num: "11" }
+            { id: 11, name: "Booster Whisky", desc: "Mix Audacieux", color: "#000000", num: "11", image: "/products/booster-whisky.png" },
+            { id: 12, name: "Booster Cider", desc: "Plaisir Pomme", color: "#c5a059", num: "12", image: "/products/booster-cider.png" }
         ]
     };
 
@@ -77,7 +78,7 @@ const Brands = () => {
                     {brandCategories[filter].map((brand) => (
                         <div key={brand.id} className="brand-reveal brand-card" style={{
                             position: 'relative',
-                            height: '400px',
+                            height: '450px', // Slightly taller
                             background: 'rgba(255,255,255,0.02)',
                             border: '1px solid rgba(255,255,255,0.05)',
                             padding: '3rem',
@@ -92,16 +93,49 @@ const Brands = () => {
                                 e.currentTarget.style.transform = 'translateY(-10px)';
                                 e.currentTarget.style.borderColor = 'var(--color-bralico-red)';
                                 e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                                const img = e.currentTarget.querySelector('.product-img');
+                                if (img) img.style.transform = 'scale(1.15) translateY(-20px) rotate(5deg)';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'translateY(0)';
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
                                 e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                                const img = e.currentTarget.querySelector('.product-img');
+                                if (img) img.style.transform = 'scale(1) translateY(0) rotate(0deg)';
                             }}>
-                            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', fontFamily: 'var(--font-serif)', color: 'white' }}>{brand.name}</h3>
-                            <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: '1.6' }}>{brand.desc}</p>
 
-                            <div style={{ marginTop: '2rem', height: '1px', width: '30px', background: 'var(--color-gold)', transition: 'width 0.4s' }} className="card-line" />
+                            {/* Product Image Float */}
+                            {brand.image && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '10%',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                    width: '80%',
+                                    height: '50%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    pointerEvents: 'none'
+                                }}>
+                                    <img
+                                        src={brand.image}
+                                        alt={brand.name}
+                                        className="product-img"
+                                        style={{
+                                            height: '100%',
+                                            objectFit: 'contain',
+                                            transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+                                            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.5))'
+                                        }}
+                                        onError={(e) => e.target.style.display = 'none'}
+                                    />
+                                </div>
+                            )}
+
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem', fontFamily: 'var(--font-serif)', color: 'white' }}>{brand.name}</h3>
+                            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', lineHeight: '1.5', maxWidth: '80%' }}>{brand.desc}</p>
+
+                            <div style={{ marginTop: '1.5rem', height: '1px', width: '30px', background: 'var(--color-bralico-red)', transition: 'width 0.4s' }} className="card-line" />
                         </div>
                     ))}
                 </div>

@@ -100,7 +100,9 @@ const Scene = () => {
                 <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={45} />
                 <AdaptiveDpr pixelated />
                 <AdaptiveEvents />
-                <SceneContent />
+                <React.Suspense fallback={null}>
+                    <SceneContent />
+                </React.Suspense>
             </Canvas>
         </div>
     );
